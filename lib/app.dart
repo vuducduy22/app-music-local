@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'features/shell/shell_screen.dart';
+import 'app/app_startup.dart';
+import 'core/theme/app_theme_data.dart';
 
-/// Root [MaterialApp] — theme, locale, routes sẽ nối từ [features/settings].
+/// Root [MaterialApp].
 class LocalMusicPlayerApp extends StatelessWidget {
   const LocalMusicPlayerApp({super.key});
 
@@ -10,11 +11,10 @@ class LocalMusicPlayerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Local Music Player',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const ShellScreen(),
+      theme: buildAppDarkTheme(),
+      darkTheme: buildAppDarkTheme(),
+      themeMode: ThemeMode.dark,
+      home: const AppStartup(),
     );
   }
 }

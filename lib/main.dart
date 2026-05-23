@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'app.dart';
+import 'core/di/app_dependencies.dart';
+import 'core/utils/android_permissions.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // TODO(M0): đăng ký AudioHandler (audio_service) trước runApp
+  await requestAndroidMediaPermissions();
+  await AppDependencies.init();
   runApp(const LocalMusicPlayerApp());
 }

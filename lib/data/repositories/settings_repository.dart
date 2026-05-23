@@ -1,17 +1,41 @@
-/// Cài đặt app — xem [repositories.md].
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core/constants/prefs_keys.dart';
+import '../services/folder_access/folder_access_service.dart';
+
+/// Cài đặt app — lưu path hoặc SAF `content://` URI.
 abstract class SettingsRepository {
-  Future<String?> getMusicFolderUri();
-  Future<void> setMusicFolderUri(String uri);
-  Future<bool> isOnboardingComplete();
+  Future<String?> getMusicFolderPath();
+  Future<void> setMusicFolderPath(String folderRef);
+  Future<void> clearMusicFolderPath();
+  Future<bool> hasMusicFolder();
 }
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  @override
-  Future<String?> getMusicFolderUri() async => null;
+  SettingsRepositoryImpl(this._prefs, this._folderAccess);
+
+  final SharedPreferences _prefs;
+  final FolderAccessService _folderAccess;
 
   @override
-  Future<void> setMusicFolderUri(String uri) async {}
+  Future<String?> getMusicFolderPath() async {
+    return _prefs.getString(PrefsKeys.musicFolderPath);
+  }
 
   @override
-  Future<bool> isOnboardingComplete() async => false;
+  Future<void> setMusicFolderPath(String folderRef) async {
+    await _prefs.setString(PrefsKeys.musicFolderPath, folderRef);
+  }
+
+  @override
+  Future<void> clearMusicFolderPath() async {
+    await _prefs.remove(PrefsKeys.musicFolderPath);
+  }
+
+  @override
+  Future<bool> hasMusicFolder() async {
+    final ref = await getMusicFolderPath();
+    if (ref == null || ref.isEmpty) return false;
+    return _folderAccess.hasValidFolderAccess(ref);
+  }
 }

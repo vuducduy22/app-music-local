@@ -1,48 +1,72 @@
-import '../domain/enums/repeat_mode.dart';
-import 'play_context.dart';
+import 'package:audio_session/audio_session.dart';
+import 'package:just_audio/just_audio.dart';
 
-/// Điều khiển phát — xem [audio.md].
+import '../data/services/saf_playback_path_resolver.dart';
+
+/// Điều khiển phát nhạc — hỗ trợ path file và `content://` (SAF).
 abstract class AudioController {
   Stream<bool> get playingStream;
-  PlayContext? get playContext;
+  String? get currentPath;
+  bool get isPreparing;
 
-  Future<void> playTrack(PlayContext context);
-  Future<void> playPause();
-  Future<void> seek(Duration position);
-  Future<void> skipToNext();
-  Future<void> skipToPrevious();
-  void setRepeatMode(RepeatMode mode);
-  Future<void> setSpeed(double speed);
+  Future<void> init();
+  Future<void> playFile(String fileRef, {required String fileName});
+  Future<void> pause();
+  Future<void> dispose();
 }
 
 class AudioControllerImpl implements AudioController {
-  @override
-  Stream<bool> get playingStream => const Stream.empty();
+  AudioControllerImpl({SafPlaybackPathResolver? pathResolver})
+      : _pathResolver = pathResolver ?? SafPlaybackPathResolver(),
+        _player = AudioPlayer();
+
+  final SafPlaybackPathResolver _pathResolver;
+  final AudioPlayer _player;
+  String? _currentPath;
+  String? _playablePath;
+  bool _isPreparing = false;
 
   @override
-  PlayContext? playContext;
+  String? get currentPath => _currentPath;
 
   @override
-  Future<void> playTrack(PlayContext context) async {
-    playContext = context;
-    // TODO(M0): just_audio setUrl
+  bool get isPreparing => _isPreparing;
+
+  @override
+  Stream<bool> get playingStream => _player.playingStream;
+
+  @override
+  Future<void> init() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
   }
 
   @override
-  Future<void> playPause() async {}
+  Future<void> playFile(String fileRef, {required String fileName}) async {
+    _isPreparing = true;
+    try {
+      final playablePath = await _pathResolver.resolve(
+        fileRef: fileRef,
+        fileName: fileName,
+      );
+      if (_playablePath != playablePath) {
+        await _player.setFilePath(playablePath);
+        _playablePath = playablePath;
+        _currentPath = fileRef;
+      }
+      await _player.play();
+    } finally {
+      _isPreparing = false;
+    }
+  }
 
   @override
-  Future<void> seek(Duration position) async {}
+  Future<void> pause() async {
+    await _player.pause();
+  }
 
   @override
-  Future<void> skipToNext() async {}
-
-  @override
-  Future<void> skipToPrevious() async {}
-
-  @override
-  void setRepeatMode(RepeatMode mode) {}
-
-  @override
-  Future<void> setSpeed(double speed) async {}
+  Future<void> dispose() async {
+    await _player.dispose();
+  }
 }

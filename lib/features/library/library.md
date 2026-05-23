@@ -7,7 +7,8 @@ Màn **chính**: hiển thị bài từ DB, **Refresh**, **tìm kiếm**, **sắ
 ## Việc cần làm
 
 - [ ] `ListView` / sliver danh sách `Track` (ảnh bìa, title, artist)
-- [ ] AppBar: search, sort menu, nút **Refresh**
+- [x] AppBar: nút **Đổi thư mục** (folder) + **Refresh**
+- [ ] AppBar: search, sort menu
 - [ ] `LibraryViewModel`: load từ `LibraryRepository`, trạng thái loading/error
 - [ ] Refresh → `library_repository.refreshLibrary()` → notify
 - [ ] Tap bài → `AudioController.playTrack(PlayContext(...))`

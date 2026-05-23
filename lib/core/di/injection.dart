@@ -1,4 +1,3 @@
 /// Đăng ký dependency — xem [di.md].
-void setupDependencies() {
-  // TODO(M0): get_it — database, repositories, audio handler
-}
+/// M0 dùng [AppDependencies.init] trong `main.dart`.
+void setupDependencies() {}
