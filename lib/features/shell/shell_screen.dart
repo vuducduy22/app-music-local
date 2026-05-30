@@ -172,12 +172,14 @@ class _ReactiveMiniPlayerState extends State<_ReactiveMiniPlayer> {
   Track? _track;
   bool _playing = false;
   bool _isPreparing = false;
+  Duration _position = Duration.zero;
+  Duration _duration = Duration.zero;
 
   @override
   void initState() {
     super.initState();
     widget.audio.addListener(_sync);
-    _sync();
+    _sync(force: true);
   }
 
   @override
@@ -186,17 +188,22 @@ class _ReactiveMiniPlayerState extends State<_ReactiveMiniPlayer> {
     super.dispose();
   }
 
-  void _sync() {
+  void _sync({bool force = false}) {
     final state = widget.audio.playbackState;
-    if (state.currentTrack?.fileUri == _track?.fileUri &&
+    if (!force &&
+        state.currentTrack?.fileUri == _track?.fileUri &&
         state.playing == _playing &&
-        state.isPreparing == _isPreparing) {
+        state.isPreparing == _isPreparing &&
+        state.position == _position &&
+        state.duration == _duration) {
       return;
     }
     setState(() {
       _track = state.currentTrack;
       _playing = state.playing;
       _isPreparing = state.isPreparing;
+      _position = state.position;
+      _duration = state.duration;
     });
   }
 
@@ -206,8 +213,11 @@ class _ReactiveMiniPlayerState extends State<_ReactiveMiniPlayer> {
       track: _track,
       playing: _playing,
       isPreparing: _isPreparing,
+      position: _position,
+      duration: _duration,
       onTap: widget.onOpenPlayer,
       onPlayPause: widget.audio.togglePlayPause,
+      onSeek: widget.audio.seek,
     );
   }
 }

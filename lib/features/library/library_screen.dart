@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/di/app_dependencies.dart';
+import '../../core/widgets/animated_play_pause_button.dart';
+import '../../core/widgets/inset_divider.dart';
 import '../../core/widgets/track_artwork.dart';
 import '../../domain/enums/sort_option.dart';
 import '../../domain/models/track.dart';
@@ -253,11 +255,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
       onRefresh: vm.refresh,
       child: ListView.separated(
         itemCount: vm.tracks.length,
-        separatorBuilder: (context, index) => const Divider(height: 1),
+        separatorBuilder: (context, index) => const InsetListDivider(),
         itemBuilder: (context, index) {
           final track = vm.tracks[index];
           final playing = vm.isPlaying(track);
           return ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
             leading: TrackArtwork(
               trackSeed: track.fileUri,
               artCachePath: track.artCachePath,
@@ -292,8 +295,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
               ],
             ),
             isThreeLine: track.missingTags,
-            trailing: IconButton(
-              icon: Icon(playing ? Icons.pause : Icons.play_arrow),
+            trailing: AnimatedPlayPauseButton(
+              playing: playing,
+              iconSize: 28,
               onPressed: () => _playTrack(context, vm, track),
             ),
             onTap: () => _playTrack(context, vm, track),

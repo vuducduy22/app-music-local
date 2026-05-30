@@ -33,5 +33,10 @@ ThemeData buildAppDarkTheme() {
       height: 64,
     ),
     dividerColor: Colors.white.withValues(alpha: 0.08),
+    dividerTheme: DividerThemeData(
+      color: Colors.white.withValues(alpha: 0.08),
+      thickness: 1,
+      space: 0,
+    ),
   );
 }

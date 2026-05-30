@@ -12,6 +12,9 @@ class GlassPanel extends StatelessWidget {
     this.tintColor,
     this.borderColor,
     this.padding,
+    this.showTopBorder = true,
+    this.clip = true,
+    this.useBlur = true,
   });
 
   final Widget child;
@@ -20,6 +23,9 @@ class GlassPanel extends StatelessWidget {
   final Color? tintColor;
   final Color? borderColor;
   final EdgeInsetsGeometry? padding;
+  final bool showTopBorder;
+  final bool clip;
+  final bool useBlur;
 
   @override
   Widget build(BuildContext context) {
@@ -33,48 +39,59 @@ class GlassPanel extends StatelessWidget {
 
     final content = padding != null ? Padding(padding: padding!, child: child) : child;
 
+    final panel = Stack(
+      clipBehavior: clip ? Clip.hardEdge : Clip.none,
+      children: [
+        Positioned.fill(child: ColoredBox(color: tint)),
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white.withValues(alpha: isDark ? 0.12 : 0.24),
+                  Colors.white.withValues(alpha: 0.0),
+                ],
+                stops: const [0.0, 0.5],
+              ),
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              border: Border(
+                top: showTopBorder
+                    ? BorderSide(color: border, width: 0.8)
+                    : BorderSide.none,
+                left: BorderSide(
+                  color: border.withValues(alpha: border.a * 0.55),
+                ),
+                right: BorderSide(
+                  color: border.withValues(alpha: border.a * 0.55),
+                ),
+              ),
+            ),
+          ),
+        ),
+        content,
+      ],
+    );
+
+    final filtered = useBlur
+        ? BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+            child: panel,
+          )
+        : panel;
+
+    if (!clip) return filtered;
+
     return ClipRRect(
       borderRadius: borderRadius,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-        child: Stack(
-          children: [
-            Positioned.fill(child: ColoredBox(color: tint)),
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withValues(alpha: isDark ? 0.12 : 0.24),
-                      Colors.white.withValues(alpha: 0.0),
-                    ],
-                    stops: const [0.0, 0.5],
-                  ),
-                ),
-              ),
-            ),
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  border: Border(
-                    top: BorderSide(color: border, width: 0.8),
-                    left: BorderSide(
-                      color: border.withValues(alpha: border.a * 0.55),
-                    ),
-                    right: BorderSide(
-                      color: border.withValues(alpha: border.a * 0.55),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            content,
-          ],
-        ),
-      ),
+      child: filtered,
     );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'glass_panel.dart';
+import 'playing_equalizer_icon.dart';
 
 /// Bo góc ảnh bìa — chỉ áp dụng khi có file art thật.
 abstract final class TrackArtworkRadius {
@@ -68,7 +69,7 @@ class TrackArtworkPlaceholder extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: [
-              if (useInitial)
+              if (useInitial && !playing)
                 Positioned(
                   right: size * 0.12,
                   bottom: size * 0.1,
@@ -79,11 +80,7 @@ class TrackArtworkPlaceholder extends StatelessWidget {
                   ),
                 ),
               if (playing)
-                Icon(
-                  Icons.graphic_eq_rounded,
-                  size: iconSize,
-                  color: Colors.white.withValues(alpha: 0.92),
-                )
+                PlayingEqualizerIcon(size: iconSize)
               else if (useInitial)
                 Text(
                   initial,
