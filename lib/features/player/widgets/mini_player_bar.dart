@@ -45,7 +45,7 @@ class MiniPlayerBar extends StatelessWidget {
                   displayTitle: track!.displayTitle,
                   playing: playing,
                   size: 48,
-                  borderRadius: 6,
+                  borderRadius: TrackArtworkRadius.mini,
                   cacheSize: 96,
                 ),
                 Expanded(

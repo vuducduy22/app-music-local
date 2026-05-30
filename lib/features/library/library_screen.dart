@@ -263,7 +263,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               displayTitle: track.displayTitle,
               playing: playing,
               size: 48,
-              borderRadius: 8,
+              borderRadius: TrackArtworkRadius.list,
             ),
             title: Text(
               track.displayTitle,

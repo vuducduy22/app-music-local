@@ -325,8 +325,8 @@ class _ArtworkState extends State<_Artwork> {
       final image = _cacheSize != null
           ? ResizeImage(_imageProvider!, width: _cacheSize, height: _cacheSize)
           : _imageProvider!;
-      return GlassArtworkFrame(
-        borderRadius: 12,
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(TrackArtworkRadius.player),
         child: Image(
           image: image,
           width: width,
@@ -342,7 +342,7 @@ class _ArtworkState extends State<_Artwork> {
       seed: widget.track?.fileUri ?? 'unknown',
       label: widget.track?.displayTitle,
       size: width,
-      borderRadius: 12,
+      borderRadius: TrackArtworkRadius.player,
       playing: false,
     );
   }

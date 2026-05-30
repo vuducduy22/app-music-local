@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 
 import 'glass_panel.dart';
 
+/// Bo góc ảnh bìa — chỉ áp dụng khi có file art thật.
+abstract final class TrackArtworkRadius {
+  static const list = 10.0;
+  static const mini = 10.0;
+  static const player = 16.0;
+}
+
 /// Placeholder khi track không có ảnh bìa — gradient theo bài + initial/icon.
 class TrackArtworkPlaceholder extends StatelessWidget {
   const TrackArtworkPlaceholder({
@@ -11,7 +18,7 @@ class TrackArtworkPlaceholder extends StatelessWidget {
     required this.seed,
     this.label,
     this.size = 48,
-    this.borderRadius = 8,
+    this.borderRadius = TrackArtworkRadius.list,
     this.playing = false,
   });
 
@@ -126,7 +133,7 @@ class TrackArtwork extends StatelessWidget {
     this.artCachePath,
     this.displayTitle,
     this.size = 48,
-    this.borderRadius = 8,
+    this.borderRadius = TrackArtworkRadius.list,
     this.playing = false,
     this.cacheSize,
   });

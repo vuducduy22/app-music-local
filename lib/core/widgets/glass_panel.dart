@@ -126,33 +126,3 @@ class GlassSheen extends StatelessWidget {
     );
   }
 }
-
-/// Khung kính quanh ảnh bìa lớn trên Player.
-class GlassArtworkFrame extends StatelessWidget {
-  const GlassArtworkFrame({
-    super.key,
-    required this.child,
-    this.borderRadius = 12,
-  });
-
-  final Widget child;
-  final double borderRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: Stack(
-        children: [
-          child,
-          Positioned.fill(
-            child: GlassSheen(
-              borderRadius: BorderRadius.circular(borderRadius),
-              intensity: 0.85,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
