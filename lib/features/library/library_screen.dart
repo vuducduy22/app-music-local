@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../core/di/app_dependencies.dart';
-import '../../data/models/scanned_audio_file.dart';
+import '../../core/widgets/track_artwork.dart';
+import '../../domain/enums/sort_option.dart';
+import '../../domain/models/track.dart';
+import '../track_edit/track_edit_screen.dart';
 import 'library_view_model.dart';
 
 /// Danh sách nhạc — xem [library.md].
@@ -14,10 +17,12 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends State<LibraryScreen> {
   late final LibraryViewModel _viewModel;
+  late final TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     final deps = AppDependencies.instance;
     _viewModel = LibraryViewModel(
       libraryRepository: deps.libraryRepository,
@@ -25,11 +30,28 @@ class _LibraryScreenState extends State<LibraryScreen> {
       settingsRepository: deps.settingsRepository,
       folderAccessService: deps.folderAccessService,
     );
-    _viewModel.loadTracks();
+    _viewModel.loadTracks().then((_) => _maybeShowRefreshHint());
+  }
+
+  Future<void> _maybeShowRefreshHint() async {
+    final settings = AppDependencies.instance.settingsRepository;
+    final showHint = await settings.consumeLibraryRefreshHint();
+    if (!showHint || !mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Đã chọn thư mục. App đang quét nhạc — '
+          'bấm ⟳ hoặc kéo xuống để quét lại khi có file mới.',
+        ),
+        duration: Duration(seconds: 6),
+      ),
+    );
   }
 
   @override
   void dispose() {
+    _searchController.dispose();
     _viewModel.dispose();
     super.dispose();
   }
@@ -49,6 +71,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 icon: const Icon(Icons.folder_outlined),
                 tooltip: 'Đổi thư mục',
               ),
+              PopupMenuButton<SortOption>(
+                icon: const Icon(Icons.sort),
+                tooltip: 'Sắp xếp',
+                initialValue: vm.sort,
+                onSelected: vm.setSort,
+                itemBuilder: (context) => SortOption.values
+                    .map(
+                      (option) => PopupMenuItem(
+                        value: option,
+                        child: Text(option.label),
+                      ),
+                    )
+                    .toList(),
+              ),
               if (vm.isRefreshing)
                 const Padding(
                   padding: EdgeInsets.all(16),
@@ -65,11 +101,31 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   tooltip: 'Quét lại',
                 ),
             ],
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(56),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                child: SearchBar(
+                  controller: _searchController,
+                  hintText: 'Tìm tên bài, nghệ sĩ…',
+                  leading: const Icon(Icons.search),
+                  onChanged: vm.setQuery,
+                  trailing: vm.query.isNotEmpty
+                      ? [
+                          IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                              vm.setQuery('');
+                            },
+                          ),
+                        ]
+                      : null,
+                ),
+              ),
+            ),
           ),
           body: _buildBody(context, vm),
-          bottomNavigationBar: vm.isPreparingPlayback
-              ? const LinearProgressIndicator()
-              : null,
         );
       },
     );
@@ -78,7 +134,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Future<void> _playTrack(
     BuildContext context,
     LibraryViewModel vm,
-    ScannedAudioFile track,
+    Track track,
   ) async {
     final ok = await vm.togglePlay(track);
     if (!context.mounted) return;
@@ -90,6 +146,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _openTrackEdit(LibraryViewModel vm, Track track) async {
+    await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TrackEditScreen(
+          track: track,
+          viewModel: vm,
+        ),
+      ),
+    );
   }
 
   Future<void> _onChangeFolder(
@@ -166,9 +234,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Text(
-            'Không tìm thấy file nhạc.\n'
-            '• Bấm ⟳ để quét lại\n'
-            '• Hoặc icon thư mục → chọn lại folder có file .mp3',
+            vm.query.isNotEmpty
+                ? 'Không có kết quả cho "${vm.query}".'
+                : 'Không tìm thấy file nhạc.\n'
+                    '• Bấm ⟳ để quét lại\n'
+                    '• Hoặc icon thư mục → chọn lại folder có file .mp3',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -187,19 +257,48 @@ class _LibraryScreenState extends State<LibraryScreen> {
           final track = vm.tracks[index];
           final playing = vm.isPlaying(track);
           return ListTile(
-            leading: CircleAvatar(
-              child: Icon(playing ? Icons.volume_up : Icons.music_note),
+            leading: TrackArtwork(
+              trackSeed: track.fileUri,
+              artCachePath: track.artCachePath,
+              displayTitle: track.displayTitle,
+              playing: playing,
+              size: 48,
+              borderRadius: 8,
             ),
             title: Text(
-              track.fileName,
+              track.displayTitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (track.displayArtist.isNotEmpty)
+                  Text(
+                    track.displayArtist,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                if (track.missingTags)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: ActionChip(
+                      label: const Text('Chưa có tên'),
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () => _openTrackEdit(vm, track),
+                    ),
+                  ),
+              ],
+            ),
+            isThreeLine: track.missingTags,
             trailing: IconButton(
               icon: Icon(playing ? Icons.pause : Icons.play_arrow),
               onPressed: () => _playTrack(context, vm, track),
             ),
             onTap: () => _playTrack(context, vm, track),
+            onLongPress: track.missingTags
+                ? () => _openTrackEdit(vm, track)
+                : null,
           );
         },
       ),

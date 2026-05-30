@@ -6,13 +6,14 @@
 
 ## Việc cần làm
 
-- [ ] Implement theo `DESIGN_SYSTEM.md`
-- [ ] `app_theme.dart` — `AppThemeKey.dark` / `.light` (2 preset)
-- [ ] `app_theme_data.dart` — `ThemeData` + Inter (`google_fonts`)
+- [ ] Implement đầy đủ theo `DESIGN_SYSTEM.md`
+- [x] `app_theme.dart` — `AppThemeKey.dark` / `.light`, `AppThemeMode`
+- [x] `app_theme_data.dart` — `ThemeData` dark M0 (chưa Inter / `google_fonts`)
+- [ ] `app_theme_data.dart` — theme light
 - [ ] `app_colors.dart` — hex §5 DESIGN_SYSTEM
 - [ ] `artwork_palette_service.dart` + `player_gradient.dart` — dynamic color Player
 - [ ] `ThemeNotifier` / đọc từ `SettingsRepository`
-- [ ] Áp dụng lên `MaterialApp` trong `app.dart`
+- [x] Áp dụng dark lên `MaterialApp` trong `app.dart` (chưa chọn theme trong Settings)
 
 ## File dự kiến
 

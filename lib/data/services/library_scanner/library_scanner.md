@@ -2,10 +2,10 @@
 
 ## Việc cần làm
 
-- [ ] Duyệt **đệ quy** mọi subfolder từ `treeUri`
-- [ ] Lọc extension theo `AppConstants.supportedAudioExtensions`
-- [ ] Trả danh sách path/uri + `modifiedAt`
-- [ ] **Merge vào DB**: bài mới, đổi file, xóa bài không còn `last_seen`
+- [x] Duyệt **đệ quy** mọi subfolder từ `treeUri`
+- [x] Lọc extension theo `AppConstants.supportedAudioExtensions`
+- [x] Trả danh sách path/uri + `modifiedAt` (filesystem; SAF có thể null)
+- [x] **Merge vào DB** qua `LibraryRepository.refreshLibrary()`
 - [ ] Chạy isolate/`compute` nếu thư viện lớn
 
 ## File

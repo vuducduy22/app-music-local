@@ -2,7 +2,7 @@
 
 ## Việc cần làm
 
-- [ ] `track.dart` — id, fileUri, fileName, title, artist, album, durationMs, artCachePath, customTitle, customArtist, missingTags
+- [x] `track.dart` — model domain (chưa persist SQLite)
 - [ ] `playlist.dart`, `playlist_with_tracks.dart`
 - [ ] `playback_snapshot.dart` — resume (trackId, positionMs)
 

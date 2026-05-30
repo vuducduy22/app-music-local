@@ -2,11 +2,12 @@
 
 ## Việc cần làm
 
-- [ ] Đọc title, artist, album, duration từ file
-- [ ] Extract embedded art → lưu cache `art_cache_path`
-- [ ] `palette_generator` → lưu `dominant_color` (ARGB) cho Player gradient
-- [ ] Đánh dấu `missing_tags` khi không có title/artist
-- [ ] Chỉ đọc lại khi `file_modified_at` thay đổi
+- [x] File `metadata_service.dart` — `audio_metadata_reader` (pure Dart)
+- [x] Đọc title, artist, album, duration từ file
+- [x] Extract embedded art → lưu cache `art_cache_path`
+- [ ] `palette_generator` → lưu `dominant_color` (ARGB) — M2 Player
+- [x] Đánh dấu `missing_tags` khi không có title/artist
+- [x] Chỉ đọc lại khi `file_modified_at` thay đổi (filesystem)
 
 ## File
 

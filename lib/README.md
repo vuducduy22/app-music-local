@@ -6,13 +6,15 @@ Mỗi thư mục có file **`.md` cùng tên thư mục** (hoặc tên module) m
 
 ## Thứ tự triển khai gợi ý
 
-| Phase | Thư mục / tính năng |
-|-------|---------------------|
-| M0 | `core/`, `data/` (folder + scan cơ bản), `features/onboarding`, `features/library`, `audio/` (play đơn) |
-| M1 | `data/` (SQLite, metadata), `features/library` (search/sort) |
-| M2 | `audio/`, `features/player`, `features/shell` |
-| M3 | `features/playlists`, `favorites`, `history`, `settings`, `track_edit` |
-| M4 | `data/services/backup`, `features/backup` |
+| Phase | Thư mục / tính năng | Tiến độ |
+|-------|---------------------|---------|
+| M0 | `core/`, `data/` (folder + scan cơ bản), `features/onboarding`, `features/library`, `audio/` (play đơn) | ✅ |
+| M1 | `data/` (SQLite, metadata), `features/library` (search/sort) | ✅ |
+| M2 | `audio/`, `features/player`, `features/shell` | ✅ |
+| M3 | `features/playlists`, `favorites`, `history`, `settings`, `track_edit` | ⏳ |
+| M4 | `data/services/backup`, `features/backup` | ⏳ |
+
+**Checklist chi tiết:** mỗi folder có file `.md` cùng tên — tick `[x]` khi xong từng việc. Tổng hợp → [docs.md](../docs.md) §3, §7.
 
 ## Cây thư mục
 

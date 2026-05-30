@@ -8,9 +8,11 @@ UI và `data/` map qua lại entity ↔ model domain.
 
 ## Việc cần làm
 
-- [ ] Model: `Track`, `Playlist`, `PlaylistEntry`, `PlayHistoryEntry`
-- [ ] Enum: `RepeatMode`, `SortOption`, `ScanResult`
-- [ ] Getter hiển thị: `displayTitle`, `displayArtist` (ưu tiên custom → tag → fileName)
+- [x] Model: `Track` (domain — chưa nối DB/list UI)
+- [ ] Model: `Playlist`, `PlaylistEntry`, `PlayHistoryEntry`
+- [x] Enum: `RepeatMode`
+- [ ] Enum: `SortOption`, `ScanResult`
+- [x] Getter hiển thị: `displayTitle`, `displayArtist` (trên `Track`)
 
 ## Không làm ở đây
 

@@ -8,6 +8,7 @@ Thuộc feature **player** — file widget: `mini_player_bar.dart`.
 - [ ] Art + title + artist (1 dòng ellipsis)
 - [ ] Play/pause
 - [ ] `onTap` → `Navigator.push(PlayerScreen)`
+- [x] Widget khung tĩnh — placeholder "Chưa phát"
 
 ## Phase
 

@@ -6,11 +6,11 @@ Hướng dẫn user **chọn folder** chứa nhạc (SAF). Sau khi xong → vào
 
 ## Việc cần làm
 
-- [ ] Màn giới thiệu ngắn + nút **「Chọn thư mục」**
-- [ ] Gọi `FolderAccessService.pickMusicFolder()`
-- [ ] Lưu URI qua `SettingsRepository`
-- [ ] Gợi ý bấm **Refresh** ở Library lần đầu
-- [ ] Không hiện lại nếu đã có folder (trừ khi xóa trong Settings)
+- [x] Màn giới thiệu ngắn + nút **「Chọn thư mục」**
+- [x] Gọi `FolderAccessService.pickMusicFolder()`
+- [x] Lưu URI qua `SettingsRepository`
+- [x] Gợi ý bấm **Refresh** ở Library lần đầu — SnackBar sau onboarding
+- [x] Không hiện lại nếu đã có folder (trừ khi xóa trong Settings)
 
 ## File
 

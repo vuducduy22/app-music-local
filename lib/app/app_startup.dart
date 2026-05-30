@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../core/di/app_dependencies.dart';
-import '../data/repositories/settings_repository.dart';
-import '../features/library/library_screen.dart';
-import '../features/onboarding/onboarding_screen.dart';
-import '../features/onboarding/onboarding_view_model.dart';
+import '../../core/di/app_dependencies.dart';
+import '../../core/utils/android_permissions.dart';
+import '../../data/repositories/settings_repository.dart';
+import '../../features/onboarding/onboarding_screen.dart';
+import '../../features/onboarding/onboarding_view_model.dart';
+import '../features/shell/shell_screen.dart';
 
-/// Điều hướng: chưa có folder → onboarding, ngược lại → library.
+/// Điều hướng: chưa có folder → onboarding, ngược lại → shell.
 class AppStartup extends StatefulWidget {
   const AppStartup({super.key});
 
@@ -17,7 +18,7 @@ class AppStartup extends StatefulWidget {
 class _AppStartupState extends State<AppStartup> {
   late final SettingsRepository _settings;
   late final Future<bool> _hasFolderFuture;
-  bool _showLibrary = false;
+  bool _showShell = false;
 
   @override
   void initState() {
@@ -25,16 +26,21 @@ class _AppStartupState extends State<AppStartup> {
     final deps = AppDependencies.instance;
     _settings = deps.settingsRepository;
     _hasFolderFuture = _settings.hasMusicFolder();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      requestAndroidMediaPermissions().catchError((Object e) {
+        debugPrint('Permission request failed: $e');
+      });
+    });
   }
 
   void _onOnboardingComplete() {
-    setState(() => _showLibrary = true);
+    setState(() => _showShell = true);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_showLibrary) {
-      return const LibraryScreen();
+    if (_showShell) {
+      return const ShellScreen();
     }
 
     return FutureBuilder<bool>(
@@ -47,7 +53,7 @@ class _AppStartupState extends State<AppStartup> {
         }
 
         if (snapshot.data == true) {
-          return const LibraryScreen();
+          return const ShellScreen();
         }
 
         final deps = AppDependencies.instance;

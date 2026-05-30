@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// Xin quyền đọc nhạc trên Android (bổ sung cho SAF).
+/// Gọi sau khi Activity sẵn sàng — [AppStartup] hoặc sau `runApp`.
 Future<void> requestAndroidMediaPermissions() async {
   if (kIsWeb || !Platform.isAndroid) return;
 
@@ -12,7 +13,6 @@ Future<void> requestAndroidMediaPermissions() async {
     await Permission.audio.request();
   }
 
-  // Android 12 trở xuống
   final storage = await Permission.storage.status;
   if (!storage.isGranted && !storage.isPermanentlyDenied) {
     await Permission.storage.request();

@@ -2,7 +2,7 @@
 
 ## Việc cần làm
 
-- [ ] `track_dao.dart` — insert/update/delete, search, sort, mark lastSeen batch
+- [x] `track_dao.dart` — insert/update/delete, search, sort, lastSeen batch
 - [ ] `playlist_dao.dart` — CRUD playlist + thứ tự bài
 - [ ] `favorite_dao.dart`
 - [ ] `history_dao.dart`

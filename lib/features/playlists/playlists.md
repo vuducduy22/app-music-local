@@ -6,6 +6,7 @@ CRUD playlist **trong app** (SQLite), không đổi file trên disk.
 
 ## Việc cần làm
 
+- [x] File `playlists_screen.dart` — placeholder UI
 - [ ] Danh sách playlist (tên, số bài)
 - [ ] Tạo / đổi tên / xóa playlist
 - [ ] Màn chi tiết: danh sách bài, kéo đổi thứ tự (tùy chọn v1)

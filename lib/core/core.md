@@ -6,11 +6,14 @@ Chứa code **không thuộc một tính năng UI cụ thể**: hằng số, the
 
 ## Việc cần làm
 
-- [ ] Định nghĩa extension file nhạc (`.mp3`, `.flac`, …)
-- [ ] Key `SharedPreferences` / settings keys
-- [ ] Theme Dark / Light (xem DESIGN_SYSTEM.md)
+- [x] Định nghĩa extension file nhạc (`.mp3`, `.flac`, …) — `AppConstants`
+- [x] Key `SharedPreferences` / settings keys — `PrefsKeys.musicFolderPath`
+- [x] Theme Dark cơ bản — `app_theme_data.dart` (M0)
+- [ ] Theme Dark / Light đầy đủ (xem DESIGN_SYSTEM.md) — M3
 - [ ] ARB / l10n Tiếng Việt + English
-- [ ] `get_it` (hoặc tương đương): đăng ký DB, repositories, `AudioHandler`
+- [x] DI M0 — `AppDependencies.init()` (thay `get_it` tạm thời)
+- [ ] `get_it` + đăng ký DB, `AudioHandler` — M1/M2
+- [x] Quyền Android — `android_permissions.dart`
 - [ ] Helper format thời lượng, chuỗi tìm kiếm
 
 ## Phụ thuộc

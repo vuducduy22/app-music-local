@@ -41,7 +41,7 @@ class LibraryScannerImpl implements LibraryScanner {
       followLinks: false,
     )) {
       if (entity is! File) continue;
-      final file = _fromPath(entity.path);
+      final file = await _fromPath(entity);
       if (file != null) files.add(file);
     }
     return files;
@@ -72,10 +72,16 @@ class LibraryScannerImpl implements LibraryScanner {
     }
   }
 
-  ScannedAudioFile? _fromPath(String path) {
+  Future<ScannedAudioFile?> _fromPath(File file) async {
+    final path = file.path;
     final ext = p.extension(path).toLowerCase();
     if (!AppConstants.supportedAudioExtensions.contains(ext)) return null;
-    return ScannedAudioFile(path: path, fileName: p.basename(path));
+    final modified = await file.lastModified();
+    return ScannedAudioFile(
+      path: path,
+      fileName: p.basename(path),
+      modifiedAtMs: modified.millisecondsSinceEpoch,
+    );
   }
 
   ScannedAudioFile? _fromNameAndUri(String name, String uri) {

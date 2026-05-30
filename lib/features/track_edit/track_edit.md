@@ -6,11 +6,12 @@ File **không có** title/artist trong tag → user **điền tên hiển thị*
 
 ## Việc cần làm
 
-- [ ] Màn / bottom sheet: form tên bài, tên nghệ sĩ (tùy chọn)
-- [ ] Lưu qua `LibraryRepository` hoặc `TrackDao`
-- [ ] Clear `missing_tags` sau khi lưu hợp lệ
-- [ ] **Vẫn cho phát** khi thiếu tag; badge "Chưa có tên" trên list
-- [ ] Mở từ Library (badge) — **không** chặn phát
+- [x] File `track_edit_screen.dart` — form lưu custom title/artist
+- [x] Màn form: tên bài, tên nghệ sĩ (tùy chọn)
+- [x] Lưu qua `LibraryRepository.updateCustomMetadata`
+- [x] Clear `missing_tags` sau khi lưu tên hợp lệ
+- [x] **Vẫn cho phát** khi thiếu tag; badge "Chưa có tên" trên list
+- [x] Mở từ Library (badge / long press)
 
 ## File
 

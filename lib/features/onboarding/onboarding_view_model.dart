@@ -38,6 +38,7 @@ class OnboardingViewModel extends ChangeNotifier {
       }
 
       await _settings.setMusicFolderPath(path);
+      await _settings.requestLibraryRefreshHint();
       return true;
     } catch (e) {
       _error = e.toString();

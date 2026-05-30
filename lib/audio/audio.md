@@ -6,12 +6,13 @@
 
 ## Việc cần làm
 
-- [ ] `MyAudioHandler` extends `BaseAudioHandler` — mediaItem, playbackState
-- [ ] `AudioController` — set source, play/pause, seek, speed, repeat
-- [ ] Next/previous theo `PlayContext` (list + index) từ ViewModel
-- [ ] Notification + điều khiển màn hình khóa
-- [ ] Debounce lưu position → `PlayerRepository`
-- [ ] Đăng ký handler trong `main.dart` trước `runApp`
+- [x] `MyAudioHandler` extends `BaseAudioHandler` — mediaItem, playbackState
+- [x] `AudioController` — play/pause, seek, speed, repeat
+- [x] `PlayContext` — nối next/previous theo list thư viện
+- [x] Next/previous theo `PlayContext`
+- [x] Notification + điều khiển màn hình khóa (`audio_service`)
+- [x] Debounce lưu position → `PlayerRepository`
+- [x] Khởi tạo handler trong `AppDependencies.init()`
 
 ## File
 

@@ -1,5 +1,16 @@
 # repositories — API dữ liệu cho features
 
+## Tiến độ (2026-05-30)
+
+| File | Trạng thái |
+|------|------------|
+| `settings_repository.dart` | ✅ M0 — folder path (`SharedPreferences`) |
+| `library_repository.dart` | ✅ M0 — cache RAM + refresh scan |
+| `playlist_repository.dart` | ⏳ M3 |
+| `favorite_repository.dart` | ⏳ M3 |
+| `history_repository.dart` | ⏳ M3 |
+| `player_repository.dart` | ⏳ M2 |
+
 ## Việc cần làm
 
 | File | Trách nhiệm |

@@ -6,6 +6,7 @@
 
 ## Việc cần làm
 
+- [x] File `favorites_screen.dart` — placeholder UI
 - [ ] Toggle favorite (icon tim) từ Library / Player
 - [ ] `FavoritesScreen` — list bài favorite
 - [ ] `FavoriteRepository` + bảng `favorites`

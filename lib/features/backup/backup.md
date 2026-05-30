@@ -6,6 +6,7 @@
 
 ## Việc cần làm
 
+- [x] File `backup_screen.dart` + view model khung — placeholder
 - [ ] Export file JSON (hoặc ZIP) qua share sheet
 - [ ] Import từ file picker — merge hoặc hỏi user
 - [ ] UI trong Settings hoặc màn riêng

@@ -1,72 +1,91 @@
-import 'package:audio_session/audio_session.dart';
-import 'package:just_audio/just_audio.dart';
+import 'dart:async';
 
-import '../data/services/saf_playback_path_resolver.dart';
+import 'package:flutter/foundation.dart';
 
-/// Điều khiển phát nhạc — hỗ trợ path file và `content://` (SAF).
-abstract class AudioController {
+import '../domain/models/track.dart';
+import 'audio_handler.dart';
+import 'audio_playback_state.dart';
+import 'play_context.dart';
+
+/// Facade phát nhạc cho UI — xem [audio.md].
+abstract class AudioController extends ChangeNotifier {
+  Stream<AudioPlaybackState> get playbackStateStream;
+  AudioPlaybackState get playbackState;
+
   Stream<bool> get playingStream;
   String? get currentPath;
   bool get isPreparing;
+  PlayContext? get playContext;
 
-  Future<void> init();
-  Future<void> playFile(String fileRef, {required String fileName});
+  Future<void> playTracks(List<Track> tracks, {required int startIndex});
+  Future<void> togglePlayPause();
   Future<void> pause();
-  Future<void> dispose();
+  Future<void> seek(Duration position);
+  Future<void> skipToNext();
+  Future<void> skipToPrevious();
+  Future<void> cycleRepeatMode();
+  Future<void> cycleSpeed();
 }
 
-class AudioControllerImpl implements AudioController {
-  AudioControllerImpl({SafPlaybackPathResolver? pathResolver})
-      : _pathResolver = pathResolver ?? SafPlaybackPathResolver(),
-        _player = AudioPlayer();
-
-  final SafPlaybackPathResolver _pathResolver;
-  final AudioPlayer _player;
-  String? _currentPath;
-  String? _playablePath;
-  bool _isPreparing = false;
-
-  @override
-  String? get currentPath => _currentPath;
-
-  @override
-  bool get isPreparing => _isPreparing;
-
-  @override
-  Stream<bool> get playingStream => _player.playingStream;
-
-  @override
-  Future<void> init() async {
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.music());
+class AudioControllerImpl extends AudioController {
+  AudioControllerImpl(this._handler) {
+    _subscription = _handler.uiStateStream.listen((state) {
+      _state = state;
+      notifyListeners();
+    });
+    _state = _handler.uiState;
   }
 
-  @override
-  Future<void> playFile(String fileRef, {required String fileName}) async {
-    _isPreparing = true;
-    try {
-      final playablePath = await _pathResolver.resolve(
-        fileRef: fileRef,
-        fileName: fileName,
-      );
-      if (_playablePath != playablePath) {
-        await _player.setFilePath(playablePath);
-        _playablePath = playablePath;
-        _currentPath = fileRef;
-      }
-      await _player.play();
-    } finally {
-      _isPreparing = false;
-    }
-  }
+  final LocalMusicAudioHandler _handler;
+  late final StreamSubscription<AudioPlaybackState> _subscription;
+  AudioPlaybackState _state = const AudioPlaybackState();
 
   @override
-  Future<void> pause() async {
-    await _player.pause();
-  }
+  AudioPlaybackState get playbackState => _state;
 
   @override
-  Future<void> dispose() async {
-    await _player.dispose();
+  Stream<AudioPlaybackState> get playbackStateStream => _handler.uiStateStream;
+
+  @override
+  Stream<bool> get playingStream =>
+      _handler.uiStateStream.map((s) => s.playing);
+
+  @override
+  String? get currentPath => _handler.currentFileUri;
+
+  @override
+  bool get isPreparing => _handler.isPreparing;
+
+  @override
+  PlayContext? get playContext => _state.playContext;
+
+  @override
+  Future<void> playTracks(List<Track> tracks, {required int startIndex}) =>
+      _handler.playTracks(tracks, startIndex: startIndex);
+
+  @override
+  Future<void> togglePlayPause() => _handler.togglePlayPause();
+
+  @override
+  Future<void> pause() => _handler.pause();
+
+  @override
+  Future<void> seek(Duration position) => _handler.seekTo(position);
+
+  @override
+  Future<void> skipToNext() => _handler.skipToNextTrack();
+
+  @override
+  Future<void> skipToPrevious() => _handler.skipToPreviousTrack();
+
+  @override
+  Future<void> cycleRepeatMode() => _handler.cycleRepeatMode();
+
+  @override
+  Future<void> cycleSpeed() => _handler.cycleSpeed();
+
+  Future<void> disposeController() async {
+    await _subscription.cancel();
+    await _handler.disposeHandler();
   }
 }

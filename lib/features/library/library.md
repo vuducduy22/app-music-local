@@ -6,14 +6,14 @@ Màn **chính**: hiển thị bài từ DB, **Refresh**, **tìm kiếm**, **sắ
 
 ## Việc cần làm
 
-- [ ] `ListView` / sliver danh sách `Track` (ảnh bìa, title, artist)
+- [x] `ListView` danh sách `Track` (ảnh bìa, title, artist)
 - [x] AppBar: nút **Đổi thư mục** (folder) + **Refresh**
-- [ ] AppBar: search, sort menu
-- [ ] `LibraryViewModel`: load từ `LibraryRepository`, trạng thái loading/error
-- [ ] Refresh → `library_repository.refreshLibrary()` → notify
-- [ ] Tap bài → `AudioController.playTrack(PlayContext(...))`
-- [ ] `missingTags` → badge "Chưa có tên"; **vẫn phát**; tap badge → `track_edit` (tùy chọn)
-- [ ] Empty state: chưa refresh / chưa có folder
+- [x] AppBar: search, sort menu
+- [x] `LibraryViewModel`: load từ `LibraryRepository`, trạng thái loading/error
+- [x] Refresh → `library_repository.refreshLibrary()` → notify
+- [x] Tap bài → `AudioController` + `PlayContext` (queue = list hiện tại)
+- [x] `missingTags` → badge "Chưa có tên"; **vẫn phát**; tap badge → `track_edit`
+- [x] Empty state: chưa có file / hướng dẫn refresh
 
 ## Widget con (tùy chọn)
 

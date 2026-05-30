@@ -2,10 +2,10 @@
 
 ## Việc cần làm
 
-- [ ] Mở picker chọn **thư mục** (Android SAF)
-- [ ] `takePersistableUriPermission` — giữ quyền sau khi đóng app
-- [ ] Lưu `treeUri` qua `SettingsRepository`
-- [ ] Kiểm tra quyền còn hợp lệ khi refresh
+- [x] Mở picker chọn **thư mục** (Android SAF)
+- [x] `takePersistableUriPermission` — giữ quyền sau khi đóng app
+- [x] Lưu `treeUri` qua `SettingsRepository`
+- [x] Kiểm tra quyền còn hợp lệ khi refresh
 
 ## File
 

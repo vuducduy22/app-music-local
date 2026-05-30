@@ -2,9 +2,9 @@
 
 ## Việc cần làm
 
-- [ ] `app_database.dart` — version, `onCreate`, `onUpgrade`
-- [ ] Migration script theo `KIEN_TRUC.md` schema
-- [ ] `daos/` — truy vấn từng bảng
+- [x] `app_database.dart` — version, `onCreate` (v1 tracks)
+- [ ] Migration script khi nâng version
+- [x] `daos/track_dao.dart` — M1
 
 ## File
 

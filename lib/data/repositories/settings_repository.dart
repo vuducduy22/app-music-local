@@ -9,6 +9,8 @@ abstract class SettingsRepository {
   Future<void> setMusicFolderPath(String folderRef);
   Future<void> clearMusicFolderPath();
   Future<bool> hasMusicFolder();
+  Future<void> requestLibraryRefreshHint();
+  Future<bool> consumeLibraryRefreshHint();
 }
 
 class SettingsRepositoryImpl implements SettingsRepository {
@@ -37,5 +39,19 @@ class SettingsRepositoryImpl implements SettingsRepository {
     final ref = await getMusicFolderPath();
     if (ref == null || ref.isEmpty) return false;
     return _folderAccess.hasValidFolderAccess(ref);
+  }
+
+  @override
+  Future<void> requestLibraryRefreshHint() async {
+    await _prefs.setBool(PrefsKeys.libraryRefreshHintPending, true);
+  }
+
+  @override
+  Future<bool> consumeLibraryRefreshHint() async {
+    final pending = _prefs.getBool(PrefsKeys.libraryRefreshHintPending) ?? false;
+    if (pending) {
+      await _prefs.remove(PrefsKeys.libraryRefreshHintPending);
+    }
+    return pending;
   }
 }

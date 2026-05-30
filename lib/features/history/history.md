@@ -6,6 +6,7 @@ Ghi mỗi lần phát (hoặc phát > N giây), hiển thị list theo thời gi
 
 ## Việc cần làm
 
+- [x] File `history_screen.dart` — placeholder UI
 - [ ] Ghi `play_history` từ `AudioController` / player khi bắt đầu bài
 - [ ] `HistoryScreen` — list track + thời điểm
 - [ ] Tap → phát lại

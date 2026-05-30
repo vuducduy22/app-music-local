@@ -6,11 +6,13 @@ Folder nhạc, theme màu, ngôn ngữ, repeat/speed mặc định (tùy chọn)
 
 ## Việc cần làm
 
-- [ ] Hiển thị / đổi **thư mục nhạc** (mở lại SAF)
+- [x] Hiển thị / đổi **thư mục nhạc** — M0: nút trên `LibraryScreen` AppBar (chưa màn Settings)
+- [ ] Màn Settings: xem / đổi folder — M3
 - [ ] Chọn **theme** Dark / Light (UI v1); lưu `theme_mode` enum 3 (`dark`/`light`/`system`)
 - [ ] Chọn **ngôn ngữ** VI / EN
 - [ ] Link mở **Export/Import** (`features/backup`)
 - [ ] Phiên bản app
+- [x] File `settings_screen.dart` — placeholder UI
 
 ## File
 
