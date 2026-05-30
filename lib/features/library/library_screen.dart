@@ -63,6 +63,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
       builder: (context, _) {
         final vm = _viewModel;
         return Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: const Text('Thư viện'),
             actions: [

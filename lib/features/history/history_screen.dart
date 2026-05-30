@@ -7,6 +7,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: const Text('Lịch sử')),
       body: const Center(child: Text('History — TODO M3')),
     );

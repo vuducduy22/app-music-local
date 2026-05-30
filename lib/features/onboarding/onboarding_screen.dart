@@ -19,6 +19,7 @@ class OnboardingScreen extends StatelessWidget {
       listenable: viewModel,
       builder: (context, _) {
         return Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(title: const Text('Local Music Player')),
           body: Padding(
             padding: const EdgeInsets.all(24),

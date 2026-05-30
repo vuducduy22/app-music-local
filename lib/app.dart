@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app/app_startup.dart';
 import 'core/theme/app_theme_data.dart';
+import 'core/widgets/app_ambient_background.dart';
 
 /// Root [MaterialApp].
 class LocalMusicPlayerApp extends StatelessWidget {
@@ -14,7 +15,9 @@ class LocalMusicPlayerApp extends StatelessWidget {
       theme: buildAppDarkTheme(),
       darkTheme: buildAppDarkTheme(),
       themeMode: ThemeMode.dark,
-      home: const AppStartup(),
+      home: const AppAmbientBackground(
+        child: AppStartup(),
+      ),
     );
   }
 }

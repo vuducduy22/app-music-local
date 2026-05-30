@@ -108,6 +108,8 @@ class _ShellScreenState extends State<ShellScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
+      extendBody: true,
       body: IndexedStack(
         index: _tabIndex,
         children: _tabs,
